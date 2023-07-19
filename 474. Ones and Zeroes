@@ -1,0 +1,39 @@
+import java.util.Arrays;
+
+class Solution {
+    public int findMaxForm(String[] strs, int m, int n) {
+        int[][][] dp = new int[strs.length][m + 1][n + 1];
+        for (int[][] arr : dp) {
+            for (int[] a : arr) {
+                Arrays.fill(a, -1);
+            }
+        }
+        return countMemo(strs, m, n, 0, dp);
+    }
+
+    int countMemo(String[] str, int m, int n, int i, int[][][] dp) {
+        if (i == str.length) {
+            return 0;
+        }
+        if (dp[i][m][n] != -1)
+            return dp[i][m][n];
+
+        int count1 = 0;
+        int count0 = 0;
+        for (int j = 0; j < str[i].length(); j++) {
+            int curr = str[i].charAt(j) - '0';
+            if (curr == 0)
+                count0++;
+            else
+                count1++;
+        }
+
+        if (count1 <= n && count0 <= m) {
+            dp[i][m][n] = Math.max(1 + countMemo(str, m - count0, n - count1, i + 1, dp),
+                    countMemo(str, m, n, i + 1, dp));
+        } else {
+            dp[i][m][n] = countMemo(str, m, n, i + 1, dp);
+        }
+        return dp[i][m][n];
+    }
+}
