@@ -1,0 +1,67 @@
+class Solution {
+    public int minFallingPathSum(int[][] matrix) {
+        if(matrix.length==1)
+         return matrix[0][0];
+         int n=matrix.length;
+        int dp[][]=new int[n][n];
+
+      
+
+        return distanceTabu(matrix,dp);
+        
+    }
+
+    //TABULATION
+    int distanceTabu(int[][]matrix,int [][]dp){
+      int n=matrix.length;
+
+      for(int i=0;i<n;i++){
+          dp[0][i]=matrix[0][i];
+      }
+      int min=Integer.MAX_VALUE;
+
+      for(int i=1;i<n;i++){
+          for(int j=0;j<n;j++){
+              if(j>0&&j<n-1){
+                  dp[i][j]=Math.min(dp[i-1][j-1],Math.min(dp[i-1][j],dp[i-1][j+1]))+matrix[i][j];
+              }else if(j>0){
+                   
+                   dp[i][j]=Math.min(dp[i-1][j-1],dp[i-1][j])+matrix[i][j];
+
+              }else {
+                  dp[i][j]=Math.min(dp[i-1][j],dp[i-1][j+1])+matrix[i][j];
+              }
+
+              if(i==n-1){
+                  min=Math.min(min,dp[i][j]);
+              }
+          }
+
+      }
+      return min;
+      
+
+
+    }
+
+
+    //MEMORIZATION TLE
+    // int distanceMemo(int[][]matrix,int i,int j,int[][]dp){
+    //   int n=matrix.length;
+    //   if(j==-1||j==n){
+    //       return Integer.MAX_VALUE;
+    //   }
+    //   if(i==n-1){
+    //       return matrix[i][j];
+    //   }
+    //   if(dp[i][j]!=-1)
+    //    return dp[i][j];
+
+    //   int a=distanceMemo(matrix,i+1,j-1,dp); 
+    //   int b=distanceMemo(matrix,i+1,j,dp); 
+    //   int c=distanceMemo(matrix,i+1,j+1,dp); 
+
+    //   return dp[i][j]=Math.min(Math.min(a,b),c)+matrix[i][j];
+
+    // }
+}
