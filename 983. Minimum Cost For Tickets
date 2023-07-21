@@ -1,0 +1,55 @@
+class Solution {
+    public int mincostTickets(int[] days, int[] costs) {
+        int arr[]=new int[days.length];
+        Arrays.fill(arr,-1);
+        return countTicketsMem(days,costs,0,arr);
+        
+    }
+     int countTicketsMem(int []days,int []cost,int index,int[]dp){
+        if(index>=days.length){
+            return 0;
+        }
+        if(dp[index]!=-1)
+         return dp[index];
+
+        //DAY1
+         int a=cost[0]+countTicketsMem(days,cost,index+1,dp);
+
+         //DAY2
+         int i;
+         for(i=index;i<days.length&&days[i]<days[index]+7;i++);    
+         int b=cost[1]+countTicketsMem(days,cost,i,dp);
+
+         //day 3
+          for(i=index;i<days.length&&days[i]<days[index]+30;i++); 
+         int c=cost[2]+countTicketsMem(days,cost,i,dp);
+
+         return dp[index]= Math.min(Math.min(a,b),c);
+
+
+    }
+
+
+    //MEMORIZATION
+    // int countTickets(int []days,int []cost,int index){
+    //     if(index>=days.length){
+    //         return 0;
+    //     }
+
+    //     //DAY1
+    //      int a=cost[0]+countTickets(days,cost,index+1);
+
+    //      //DAY2
+    //      int i;
+    //      for(i=index;i<days.length&&days[i]<days[index]+7;i++);    
+    //      int b=cost[1]+countTickets(days,cost,i);
+
+    //      //day 3
+    //       for(i=index;i<days.length&&days[i]<days[index]+30;i++); 
+    //      int c=cost[2]+countTickets(days,cost,i);
+
+    //      return Math.min(Math.min(a,b),c);
+
+
+    // }
+}
